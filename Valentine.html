@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>My Valentine ❤️</title>
+<title>Will You Be My Valentine? ❤️</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -16,23 +16,28 @@ body {
   height: 100vh;
   font-family: 'Segoe UI', sans-serif;
   overflow: hidden;
+  background: #ff7aa2;
+  color: white;
 }
 
+/* ===== SLIDESHOW ===== */
 .slideshow {
   position: fixed;
   width: 100%;
   height: 100%;
-  z-index: -1;
+  z-index: -2;
 }
 
 .slide {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-size: cover;
+  background-size: contain;        /* ✔️ مش cover */
+  background-repeat: no-repeat;
   background-position: center;
+  background-color: rgba(255,255,255,0.15);
   opacity: 0;
-  transition: opacity 2s ease-in-out;
+  transition: opacity 1s ease-in-out;
 }
 
 .slide.active {
@@ -41,48 +46,64 @@ body {
 
 /* overlay */
 .overlay {
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 100%;
   background: rgba(255, 0, 90, 0.25);
+  z-index: -1;
 }
 
-/* content */
-.content {
+/* ===== CONTENT ===== */
+.container {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  color: white;
-  padding: 20px;
 }
 
-.content h1 {
+h1 {
   font-size: 3em;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
-.content p {
+p {
   font-size: 1.4em;
-  line-height: 1.8;
+  margin-bottom: 25px;
 }
 
-/* hearts animation */
+/* ===== BUTTONS ===== */
+button {
+  padding: 15px 40px;
+  font-size: 20px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#yesBtn {
+  background: white;
+  color: #ff2f92;
+}
+
+#noBtn {
+  background: #ff2f92;
+  color: white;
+  position: absolute;
+}
+
+/* ===== HEARTS ===== */
 .heart {
   position: absolute;
-  font-size: 24px;
-  animation: float 6s infinite ease-in;
-  opacity: 0.8;
+  font-size: 28px;
+  animation: explode 2s ease-out forwards;
 }
 
-@keyframes float {
-  0% {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-  }
+@keyframes explode {
+  0% { transform: scale(0); opacity: 1; }
   100% {
-    transform: translateY(-600px) scale(1.5);
+    transform: translate(var(--x), var(--y)) scale(1.5);
     opacity: 0;
   }
 }
@@ -91,66 +112,108 @@ body {
 
 <body>
 
-<!-- background slideshow -->
+<!-- SLIDES -->
 <div class="slideshow">
   <div class="slide active" style="background-image:url('1.jpeg')"></div>
   <div class="slide" style="background-image:url('2.jpeg')"></div>
   <div class="slide" style="background-image:url('3.jpeg')"></div>
   <div class="slide" style="background-image:url('4.jpeg')"></div>
-  <div class="slide" style="background-image:url('5.jpeg')"></div>
+    <div class="slide" style="background-image:url('5.jpeg')"></div>
+
     <div class="slide" style="background-image:url('6.jpeg')"></div>
   <div class="slide" style="background-image:url('7.jpeg')"></div>
   <div class="slide" style="background-image:url('8.jpeg')"></div>
   <div class="slide" style="background-image:url('9.jpeg')"></div>
   <div class="slide" style="background-image:url('10.jpeg')"></div>
   <div class="slide" style="background-image:url('11.jpeg')"></div>
-    <div class="slide" style="background-image:url('12.jpeg')"></div>
+  <div class="slide" style="background-image:url('12.jpeg')"></div>
   <div class="slide" style="background-image:url('13.jpeg')"></div>
-
 
 </div>
 
 <div class="overlay"></div>
 
-<!-- content -->
-<div class="content">
-  <h1>My Valentine ❤️</h1>
-  <p>
-    Every moment with you feels like home.<br>
-    You are my favorite place,<br>
-    my happiest memory,<br>
-    and my forever choice 💕<br><br>
-    Will you always be mine?
-  </p>
+<!-- CONTENT -->
+<div class="container">
+  <h1>Will you be my Valentine? ❤️</h1>
+  <p id="noText">اختار صح 😌</p>
+
+  <button id="yesBtn">Yes 💖</button>
+  <button id="noBtn">No 😅</button>
 </div>
 
-
+<!-- MUSIC (اختياري) -->
+<audio autoplay loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-/* slideshow */
+/* ===== SLIDESHOW SPEED + LOOP ===== */
 let slides = document.querySelectorAll('.slide');
-let index = 0;
+let slideIndex = 0;
 
 setInterval(() => {
-  slides[index].classList.remove('active');
-  index = (index + 1) % slides.length;
-  slides[index].classList.add('active');
-}, 5000);
+  slides[slideIndex].classList.remove('active');
+  slideIndex = (slideIndex + 1) % slides.length; // ✔️ Loop
+  slides[slideIndex].classList.add('active');
+}, 2500); // ⚡ سريع
 
-/* hearts */
-setInterval(() => {
-  let heart = document.createElement("div");
-  heart.className = "heart";
-  heart.innerHTML = "❤️";
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.bottom = "0px";
-  heart.style.animationDuration = (4 + Math.random() * 3) + "s";
-  document.body.appendChild(heart);
+/* ===== NO BUTTON TRICK ===== */
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const noText = document.getElementById("noText");
 
-  setTimeout(() => heart.remove(), 7000);
-}, 500);
+const messages = [
+  "متأكد؟ 🤨",
+  "فكر تاني 😏",
+  "مفيش No 😌"
+];
+let msgIndex = 0;
+
+noBtn.addEventListener("mouseenter", () => {
+  const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+  const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+
+  noText.textContent = messages[msgIndex];
+  msgIndex = (msgIndex + 1) % messages.length;
+});
+
+/* ===== YES CLICK ===== */
+yesBtn.addEventListener("click", () => {
+  document.body.innerHTML = `
+    <div class="container">
+      <h1>Yaaaaay 💖</h1>
+      <p>
+        I knew it 😌<br>
+        You are my favorite person,<br>
+        today and always ❤️
+      </p>
+    </div>
+  `;
+  explodeHearts();
+});
+
+/* ===== HEART EXPLOSION ===== */
+function explodeHearts() {
+  for (let i = 0; i < 40; i++) {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "❤️";
+
+    heart.style.setProperty("--x", (Math.random() - 0.5) * 400 + "px");
+    heart.style.setProperty("--y", (Math.random() - 0.5) * 400 + "px");
+
+    heart.style.left = "50%";
+    heart.style.top = "50%";
+
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 2000);
+  }
+}
 </script>
 
 </body>
 </html>
-
