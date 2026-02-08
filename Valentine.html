@@ -19,6 +19,15 @@
             align-items: center;
             overflow: hidden;
         }
+        .box {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid #d63384;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            margin: 20px;
+        }
         h1 {
             font-size: 2.5em;
             margin-bottom: 20px;
@@ -92,21 +101,30 @@
 </head>
 <body>
     <div class="hearts" id="hearts"></div>
-    <h1>Will you be my valentine?</h1>
-    <div class="buttons">
-        <button id="no">No</button>
-        <button id="yes">Yes</button>
+    <div class="box">
+        <h1>Will you be my valentine?</h1>
+        <div class="buttons">
+            <button id="no">No</button>
+            <button id="yes">Yes</button>
+        </div>
     </div>
-    <div class="success" id="success">
+    <div class="box success" id="success">
         <h2>Yessssss, You are my valentine! ❤️</h2>
-        <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExbXdzemo2NmpveW8wYnBqbmdwYnJnamltZWZ1OWRsNGFsODB1YnVxMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/QjUGdSSXSQCbbP6rpC/giphy.gif" alt="Happiness GIF">
+        <img src="https://media.giphy.com/media/3o7TKz9bX9v8Z8Z8Z8/giphy.gif" alt="Happiness GIF">
     </div>
+
+    <!-- عنصر الصوت المخفي -->
+    <audio id="cheerSound" preload="auto">
+        <source src="https://www.soundjay.com/misc/sounds/applause-01.wav" type="audio/wav">
+        Your browser does not support the audio element.
+    </audio>
 
     <script>
         const noButton = document.getElementById('no');
         const yesButton = document.getElementById('yes');
         const successDiv = document.getElementById('success');
         const heartsContainer = document.getElementById('hearts');
+        const cheerSound = document.getElementById('cheerSound');
 
         // Function to move the "No" button to a random position
         function moveNoButton() {
@@ -127,6 +145,8 @@
             document.querySelector('.buttons').style.display = 'none';
             document.querySelector('h1').style.display = 'none';
             successDiv.style.display = 'flex';
+            // تشغيل صوت الاحتفال
+            cheerSound.play();
         });
 
         // Add floating hearts for extra romance
